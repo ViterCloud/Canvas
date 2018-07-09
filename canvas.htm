@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style media="screen">
+        .paint{
+            width: 500px;
+            height: 500px;
+            margin: 50px auto;
+            display: block;
+            box-sizing: border-box;;
+            border: 1px solid #ccc;
+        }
+    </style>
+    <title>Canvas</title>
+</head>
+<body>
+    <div class="content">
+    </div>
+
+<script type="text/javascript">
+    window.onload = function(){
+        var content = document.querySelector('.content');
+        var canvas = document.createElement('canvas');
+        canvas.className = 'paint';
+        canvas.id = 'paint';
+        canvas.innerText = 'Your browser has not support canvas tag. Please give it up quick!';
+        content.appendChild(canvas);
+
+        var pen = canvas.getContext('2d');
+        var map = {points: [], index: 0, times: 10, lastPoint: null};
+
+        var p = function(){
+            setTimeout(function(){
+                map = painter(pen, map, canvas.width, canvas.height);
+                if(map.index <= map.times){ p(); }
+            }, 1000);
+        }
+        p();
+    }
+
+    function painter(pen, map, width, height){
+        if(map.index == 0){
+            p1 = createPoint(width, height);
+            map.points.push(p1.join(','));
+        }else{
+            p1 = map.points[map.points.length - 1].split(',');
+        }
+        p2 = createPoint(width, height);
+        while(map.points.indexOf(p2) != -1){
+            p2 = createPoint(width, hieght);
+        }
+        pen.beginPath();
+        pen.moveTo(p1[0], p1[1]);
+        pen.lineTo(p2[0], p2[1]);
+        pen.linewidth = 1;
+        pen.strokeStyle = '#'+Math.floor(Math.random()*16777215).toString(16);
+        pen.stroke();
+        map.index++;
+        return map;
+    }
+
+    function createPoint(w, h){
+        return [rand(1, w-1), rand(1, h-1)];
+    }
+
+    function rand(min, max){
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+</script>
+</body>
+</html>
